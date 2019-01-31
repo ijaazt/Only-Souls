@@ -40,12 +40,12 @@
     </style>
 </head>
 <body class="container">
-<div class="row mb-1">
+<div class="row">
     <div class=col align="center">
-        <h1 class="display-1">Person Collection</h1>
+        <h1 class="display-2">Person Collection</h1>
     </div>
 </div>
-<form action="personCollection" class="m-5" method="post">
+<form action="personCollection" class="mx-5 my-1" method="post">
     <div class="form-row">
         <div class="col">
             <label for="firstNameAdd">First name</label>

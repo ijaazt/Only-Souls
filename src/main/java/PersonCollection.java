@@ -18,6 +18,7 @@ public class PersonCollection extends javax.servlet.http.HttpServlet {
         super.init();
         try {
             connection = MyConnection.getConnection();
+            connection.prepareStatement("create table if not exists People (id int primary key AUTO_INCREMENT, firstName varchar(25), lastName varchar(25), eyeColor varchar(25), hairColor varchar(25), height double, weight double);").execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,7 +65,7 @@ public class PersonCollection extends javax.servlet.http.HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("PersonCollection.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/PersonCollection.jsp");
         requestDispatcher.forward(request, response);
     }
 
