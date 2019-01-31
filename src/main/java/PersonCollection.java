@@ -1,18 +1,18 @@
 import beans.Person;
-import org.omg.PortableServer.ForwardRequest;
 
-import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Map;
-import javax.servlet.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
 
-@WebServlet(name="PersonCollection", urlPatterns = "/personCollection")
+@WebServlet(name = "PersonCollection", urlPatterns = "/personCollection")
 public class PersonCollection extends javax.servlet.http.HttpServlet {
     private Connection connection;
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -26,25 +26,26 @@ public class PersonCollection extends javax.servlet.http.HttpServlet {
     private ArrayList<Person> getAllPeople() throws SQLException {
         ArrayList<Person> people = new ArrayList<>();
         Statement statement = connection.createStatement();
-        statement.execute("select * from People;");
+        statement.execute("select * from People order by id desc;");
         ResultSet rs = statement.getResultSet();
         while (rs.next()) {
-            people.add( new Person(
-            rs.getString("firstName"),
-            rs.getString("lastName"),
-            rs.getString("eyeColor"),
-            rs.getString("hairColor"),
-            rs.getDouble("height"),
-            rs.getDouble("weight"),
-            rs.getInt("id")));
+            people.add(new Person(
+                    rs.getString("firstName"),
+                    rs.getString("lastName"),
+                    rs.getString("eyeColor"),
+                    rs.getString("hairColor"),
+                    rs.getDouble("height"),
+                    rs.getDouble("weight"),
+                    rs.getInt("id")));
         }
         return people;
     }
+
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String method = request.getParameter("_method");
-        if(method.equals("PUT")) {
+        if (method.equals("PUT")) {
             doPut(request, response);
-        } else if(method.equals("DELETE")) {
+        } else if (method.equals("DELETE")) {
             doDelete(request, response);
         } else {
             try {
@@ -55,12 +56,11 @@ public class PersonCollection extends javax.servlet.http.HttpServlet {
             }
             doGet(request, response);
         }
-
     }
 
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         try {
-            request.setAttribute("people",getAllPeople());
+            request.setAttribute("people", getAllPeople());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,11 +83,12 @@ public class PersonCollection extends javax.servlet.http.HttpServlet {
         statement.setObject(6, height);
         statement.execute();
     }
+
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
         try {
             PreparedStatement statement = connection.prepareStatement("delete from People where id=?");
-            statement.setObject(1,request.getParameter("id"));
+            statement.setObject(1, request.getParameter("id"));
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

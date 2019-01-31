@@ -3,7 +3,7 @@ package beans;
 import java.util.Objects;
 
 public class Person {
-    private int id;
+    private final int id;
     private String firstName;
     private String lastName;
     private String eyeColor;
