@@ -8,10 +8,23 @@ public class Person {
     private String lastName;
     private String eyeColor;
     private String hairColor;
-    private double height;
-    private double weight;
+    private Double height;
+    private Integer weight;
 
-    public Person(String firstName, String lastName, String eyeColor, String hairColor, double height, double weight, int id) {
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", eyeColor='" + eyeColor + '\'' +
+                ", hairColor='" + hairColor + '\'' +
+                ", height=" + height +
+                ", weight=" + weight +
+                '}';
+    }
+
+    public Person(String firstName, String lastName, String eyeColor, String hairColor, Double height, Integer weight, int id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.eyeColor = eyeColor;
@@ -24,6 +37,7 @@ public class Person {
     public int getId() {
         return id;
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -61,15 +75,15 @@ public class Person {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
-    public double getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
@@ -90,4 +104,5 @@ public class Person {
     public int hashCode() {
         return Objects.hash(firstName, lastName, eyeColor, hairColor, height, weight);
     }
+
 }
