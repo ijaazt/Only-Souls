@@ -1,4 +1,4 @@
-package beans;
+package com.muhammadtello.jh6.beans;
 
 import java.util.Objects;
 
@@ -8,8 +8,8 @@ public class Person {
     private String lastName;
     private String eyeColor;
     private String hairColor;
-    private Double height;
-    private Integer weight;
+    private Size height;
+    private Double weight;
 
     @Override
     public String toString() {
@@ -24,7 +24,7 @@ public class Person {
                 '}';
     }
 
-    public Person(String firstName, String lastName, String eyeColor, String hairColor, Double height, Integer weight, int id) {
+    public Person(String firstName, String lastName, String eyeColor, String hairColor, Size height, Double weight, int id) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.eyeColor = eyeColor;
@@ -71,19 +71,19 @@ public class Person {
         this.hairColor = hairColor;
     }
 
-    public double getHeight() {
+    public Size getHeight() {
         return height;
     }
 
-    public void setHeight(Double height) {
+    public void setHeight(Size height) {
         this.height = height;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 

@@ -1,25 +1,20 @@
-package beans;
+package com.muhammadtello.jh6.beans;
 
 import javax.servlet.http.HttpServletRequest;
 
-interface Converter<T, O> {
-
-}
-
 public class ModelParameters {
-    Person person;
-    String _method;
+    private Person person;
 
     public ModelParameters(HttpServletRequest request) throws Exception {
         String firstName = getParameter(request, "firstName");
         String lastName = getParameter(request, "lastName");
         String eyeColor = getParameter(request,"eyeColor");
         String hairColor = getParameter(request,"hairColor");
-//        Integer heightFt = getParameter(request, "heightFt");
-//        Integer heightIn = getParameter(request, "heightIn");
-        Integer height = Integer.parseInt(getParameter(request, "height"));
-        String weight = getParameter(request, "weight");
-        _method = getParameter(request,"_method");
+        int heightFt = Integer.parseInt(getParameter(request, "heightFt"));
+        int heightInchs = Integer.parseInt(getParameter(request, "heightFt"));
+        double weight = Double.parseDouble(getParameter(request, "weight"));
+        int id = Integer.parseInt(getParameter(request, "id"));
+        person = new Person(firstName, lastName, eyeColor, hairColor, new Size(heightFt, heightInchs), weight, id);
     }
 
     private String getParameter(HttpServletRequest request, String paramName) throws NullParameterException, NullRequestParameterException {
@@ -31,12 +26,11 @@ public class ModelParameters {
         return paramValue;
     }
 
-
     public Person getPerson() {
         return person;
     }
 
-    public String getMethod() {
-        return _method;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }
