@@ -1,4 +1,4 @@
-package com.muhammadtello.jh6.sql;
+package com.muhammadtello.jh6.database;
 
 import java.sql.SQLException;
 import java.util.List;

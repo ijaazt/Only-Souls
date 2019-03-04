@@ -1,13 +1,14 @@
 package com.muhammadtello.jh6.beans;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Size {
+public class Size implements Serializable {
     private int inches;
     private int feet;
     private int totalInches;
 
-    Size(int inches, int feet) {
+    Size(int feet, int inches) {
         this.inches = inches;
         this.feet = feet;
         totalInches = calculateTotalInches(inches, feet);
@@ -15,6 +16,7 @@ public class Size {
     private int calculateTotalInches(int inches, int feet) {
         return inches + feet * 12;
     }
+
     public Size(int totalInches) {
         this.totalInches = totalInches;
         inches = totalInches % 12;

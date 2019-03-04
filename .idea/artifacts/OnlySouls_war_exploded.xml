@@ -21,6 +21,7 @@
           <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy:1.9.7" />
           <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy-agent:1.9.7" />
           <element id="library" level="project" name="Maven: org.objenesis:objenesis:2.6" />
+          <element id="library" level="project" name="Maven: org.json:json:20180813" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="Only-Souls/web/Web" />

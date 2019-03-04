@@ -1,4 +1,4 @@
-package com.muhammadtello.jh6.sql;
+package com.muhammadtello.jh6.database;
 
 class PersonContract {
     static final String TABLE_NAME = "People";
@@ -9,6 +9,6 @@ class PersonContract {
     static final String COLUMN_NAME_HAIR_COLOR = "hairColor";
     static final String COLUMN_NAME_HEIGHT = "height";
     static final String COLUMN_NAME_WEIGHT = "weight";
-    static final String CREATE_TABLE = String.format("create table if not exists %s ( %s int primary key auto_increment, %s varchar(25), %s varchar(25), %s varchar(25) %s varshar(25), %s int, %s double);", TABLE_NAME, COLUMN_NAME_ID, COLUMN_NAME_FIRST_NAME, COLUMN_NAME_LAST_NAME, COLUMN_NAME_EYE_COLOR, COLUMN_NAME_HAIR_COLOR, COLUMN_NAME_HEIGHT, COLUMN_NAME_WEIGHT);
+    static final String CREATE_TABLE = "create table if not exists " + TABLE_NAME + " ( " + COLUMN_NAME_ID + " int primary key auto_increment, " + COLUMN_NAME_FIRST_NAME + " varchar(25), " + COLUMN_NAME_LAST_NAME + " varchar(25), " + COLUMN_NAME_EYE_COLOR + " varchar(25), " + COLUMN_NAME_HAIR_COLOR + " varchar(25), " + COLUMN_NAME_HEIGHT + " int, " + COLUMN_NAME_WEIGHT + " float);";
 
 }

@@ -1,4 +1,4 @@
-package com.muhammadtello.jh6.sql;
+package com.muhammadtello.jh6.database;
 
 import com.muhammadtello.jh6.beans.Person;
 import com.muhammadtello.jh6.beans.Size;
@@ -10,8 +10,9 @@ import java.util.List;
 public class PersonDAO implements GenericDAO<Person> {
     private Connection connection;
 
-    public PersonDAO(Connection connection) {
+    public PersonDAO(Connection connection) throws SQLException {
         this.connection = connection;
+        createTable();
     }
 
     Person getPerson(ResultSet rs) throws SQLException {
@@ -63,15 +64,15 @@ public class PersonDAO implements GenericDAO<Person> {
         preparedStatement.setObject(2, value.getLastName());
         preparedStatement.setObject(3, value.getEyeColor());
         preparedStatement.setObject(4, value.getHairColor());
-        preparedStatement.setObject(5, value.getHeight().getTotalInches());
-        preparedStatement.setObject(6, value.getHeight());
+        preparedStatement.setObject(5, value.getWeight());
+        preparedStatement.setObject(6, value.getHeight().getTotalInches());
         return preparedStatement;
     }
 
     @Override
     public boolean createRow(Person value) throws SQLException {
         try(PreparedStatement preparedStatement = connection.prepareStatement(
-                "insert into People (firstName, lastName, eyeColor, hairColor, height, weight) value(?, ?, ?, ?, ?, ?)")) {
+                "insert into People (firstName, lastName, eyeColor, hairColor, weight, height) value(?, ?, ?, ?, ?, ?)")) {
             return insertPerson(preparedStatement, value).execute();
         }
     }
@@ -88,7 +89,6 @@ public class PersonDAO implements GenericDAO<Person> {
         try(PreparedStatement preparedStatement = connection.prepareStatement("update  People set firstName=?, lastName=?, eyeColor=?, hairColor=?, weight=?, height=? where id=?;")) {
             insertPerson(preparedStatement, value).setObject(7, id);
             return preparedStatement.execute();
-
         }
     }
 }

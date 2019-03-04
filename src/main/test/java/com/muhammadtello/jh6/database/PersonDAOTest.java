@@ -1,4 +1,4 @@
-package com.muhammadtello.jh6.sql;
+package com.muhammadtello.jh6.database;
 
 import com.muhammadtello.jh6.beans.Person;
 import com.muhammadtello.jh6.beans.Size;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class TestPersonDAO {
+public class PersonDAOTest {
     @Mock
     private Connection connection;
     @Mock
