@@ -1,4 +1,10 @@
-package com.muhammadtello.jh6.beans;
+package com.muhammadtello.jh6.servlets;
+
+import com.muhammadtello.jh6.beans.Person;
+import com.muhammadtello.jh6.beans.Size;
+import com.muhammadtello.jh6.exceptions.NullParameterException;
+import com.muhammadtello.jh6.exceptions.NullRequestParameterException;
+import com.muhammadtello.jh6.info.Method;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,4 +1,6 @@
-package com.muhammadtello.jh6.database;
+package com.muhammadtello.jh6.connection_pool;
+
+import com.muhammadtello.jh6.exceptions.TooManyConnectionsException;
 
 import java.sql.Connection;
 
@@ -9,4 +11,6 @@ public interface ConnectionPool {
     String getUser();
     String getPassword();
     int getMaxConnection();
+    void increaseMaxConnection(int max);
+    void closeAllConnections();
 }

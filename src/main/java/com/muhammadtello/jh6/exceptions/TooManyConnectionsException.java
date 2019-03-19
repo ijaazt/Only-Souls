@@ -1,7 +1,7 @@
-package com.muhammadtello.jh6.database;
+package com.muhammadtello.jh6.exceptions;
 
 public class TooManyConnectionsException extends Exception {
-    TooManyConnectionsException() {
+    public TooManyConnectionsException() {
         super();
     }
 }

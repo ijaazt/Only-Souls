@@ -7,4 +7,7 @@ metadata-complete="false">
     <welcome-file-list>
         <welcome-file>personCollection</welcome-file>
     </welcome-file-list>
+    <listener>
+        <listener-class>com.muhammadtello.jh6.servlets.PooledDatabaseStartup</listener-class>
+    </listener>
 </web-app>

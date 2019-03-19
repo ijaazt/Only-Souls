@@ -8,7 +8,7 @@ public class Size implements Serializable {
     private int feet;
     private int totalInches;
 
-    Size(int feet, int inches) {
+    public Size(int feet, int inches) {
         this.inches = inches;
         this.feet = feet;
         totalInches = calculateTotalInches(inches, feet);

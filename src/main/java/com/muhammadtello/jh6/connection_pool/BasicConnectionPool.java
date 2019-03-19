@@ -1,4 +1,6 @@
-package com.muhammadtello.jh6.database;
+package com.muhammadtello.jh6.connection_pool;
+
+import com.muhammadtello.jh6.exceptions.TooManyConnectionsException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,26 +9,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BasicConnectionPool implements ConnectionPool {
-    private String url;
-    private String user;
-    private String password;
-    private List<Connection> unUsedConnections;
-    private List<Connection> usedConnections;
-    private static final int MAX_CONNECTIONS = 20;
+    private final String url;
+    private final String user;
+    private final String password;
+    private final List<Connection> unUsedConnections;
+    private final List<Connection> usedConnections;
+    private static final int INITIAL_CONNECTION_LIMIT = 20;
+    private int maxConnection = INITIAL_CONNECTION_LIMIT;
 
-    public static ConnectionPool createPool(
-            String url, String user, String password
-    ) throws SQLException {
+    public static ConnectionPool createPool(String url, String user, String password) throws SQLException {
         List<Connection> connectionList = new ArrayList<>();
-        for (int i = 0; i < MAX_CONNECTIONS; i++) {
+        for (int i = 0; i < INITIAL_CONNECTION_LIMIT; i++) {
              connectionList.add(createConnection(url, user, password));
         }
         return new BasicConnectionPool(url, user, password, connectionList);
     }
 
-    static Connection createConnection(
-            String url, String user, String password
-    ) throws SQLException {
+    static Connection createConnection(String url, String user, String password) throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
 
@@ -39,18 +38,22 @@ public class BasicConnectionPool implements ConnectionPool {
     }
 
     @Override
-    public Connection getConnection() throws TooManyConnectionsException {
+    public void closeAllConnections() {
+
+    }
+
+    @Override
+    synchronized public Connection getConnection() throws TooManyConnectionsException {
         int connectionPointer = unUsedConnections.size() - 1;
         if(connectionPointer < 0) {
             throw new TooManyConnectionsException();
         }
         Connection currentConnection = unUsedConnections.remove(connectionPointer);
         usedConnections.add(currentConnection);
-        return currentConnection;
-    }
+        return currentConnection; }
 
     @Override
-    public boolean releaseConnection(Connection connection) {
+    synchronized public boolean releaseConnection(Connection connection) {
         boolean connectionIsBeingUsed = usedConnections.contains(connection);
         if(connectionIsBeingUsed) {
             int connectionPointer = usedConnections.indexOf(connection);
@@ -58,6 +61,17 @@ public class BasicConnectionPool implements ConnectionPool {
             return unUsedConnections.add(connectionToBeReleased);
         } else {
             return false;
+        }
+    }
+
+    synchronized public void increaseMaxConnection(int limit) {
+        this.maxConnection += limit;
+        for(int i = 0; i < limit; i++) {
+            try {
+                unUsedConnections.add(createConnection(url, user, password));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -78,6 +92,6 @@ public class BasicConnectionPool implements ConnectionPool {
 
     @Override
     public int getMaxConnection() {
-        return MAX_CONNECTIONS;
+        return maxConnection;
     }
 }

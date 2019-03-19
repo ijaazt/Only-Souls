@@ -17,6 +17,7 @@
 	</style>
 </head>
 <body class="container">
+
 <div class="row">
 	<div class=col align="center">
 		<h1 class="display-2">Person Collection</h1>
@@ -126,7 +127,6 @@
 		</d:forEach>
 	</div>
 </c:forEach>
-
 
 </body>
 </html>

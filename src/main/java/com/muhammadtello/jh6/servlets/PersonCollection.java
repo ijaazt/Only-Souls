@@ -1,11 +1,9 @@
 package com.muhammadtello.jh6.servlets;
 
-import com.muhammadtello.jh6.beans.Method;
-import com.muhammadtello.jh6.beans.ModelParameters;
 import com.muhammadtello.jh6.beans.Person;
-import com.muhammadtello.jh6.database.ConnectionPool;
+import com.muhammadtello.jh6.connection_pool.ConnectionPool;
 import com.muhammadtello.jh6.database.PersonDAO;
-import com.muhammadtello.jh6.database.TooManyConnectionsException;
+import com.muhammadtello.jh6.exceptions.TooManyConnectionsException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -17,11 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
 
-@WebServlet(name = "PersonCollectionServlet", urlPatterns = "/personCollection")
-public class PersonCollectionServlet extends HttpServlet {
-    final private String jspAddress = "/WEB-INF/PersonCollection.jsp";
-    final private String connectionPoolName = "connectionPool";
-    final private String personList = "personList";
+import static com.muhammadtello.jh6.info.ServletInfo.*;
+
+@WebServlet(name = "PersonCollection", urlPatterns = "/personCollection")
+public class PersonCollection extends HttpServlet {
     private PersonDAO personDAO;
     private Connection connection;
     private ConnectionPool connectionPool;
@@ -29,22 +26,23 @@ public class PersonCollectionServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        connectionPool = (ConnectionPool) config.getServletContext().getAttribute(connectionPoolName);
+        connectionPool = (ConnectionPool) config.getServletContext().getAttribute(CONNECTION_POOL.info());
             try {
                 connection = connectionPool.getConnection();
                 personDAO = new PersonDAO(connection);
-            } catch (TooManyConnectionsException | SQLException e) {
+            } catch (TooManyConnectionsException e) {
+                e.printStackTrace();
+                connectionPool.increaseMaxConnection(10);
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
 
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(jspAddress);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(JSP_ADDRESS.info());
         try {
             ModelParameters modelParameters = new ModelParameters(request);
-            System.out.println(modelParameters.getPerson());
-            System.out.println(modelParameters.getMethod());
             Person person = modelParameters.getPerson();
             switch (modelParameters.getMethod()) {
                 case DELETE: personDAO.deleteRow(person.getId());
@@ -54,7 +52,7 @@ public class PersonCollectionServlet extends HttpServlet {
                 case POST: personDAO.createRow(person);
                 break;
             }
-            request.setAttribute(personList, personDAO.getRows());
+            request.setAttribute(PERSON_LIST.info(), personDAO.getRows());
             System.out.println(personDAO.getRows());
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,9 +61,9 @@ public class PersonCollectionServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher(jspAddress);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher(JSP_ADDRESS.info());
         try {
-            request.setAttribute(personList, personDAO.getRows());
+            request.setAttribute(PERSON_LIST.info(), personDAO.getRows());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -76,6 +74,6 @@ public class PersonCollectionServlet extends HttpServlet {
     @Override
     public void destroy() {
         connectionPool.releaseConnection(connection);
-        getServletContext().setAttribute(connectionPoolName, connectionPool);
+        getServletContext().setAttribute(CONNECTION_POOL.info(), connectionPool);
     }
 }
